@@ -18,8 +18,7 @@ bool is_overlap(struct Course course, struct Course oldCourse){
 }
 
 void class_arrangement(int classnum, int coursenum, struct Classroom classrooms[], struct Course courses[]){
-    ListOfCourse courseList[MAX_CLASSNUM+5];
-    for(int i = 0; i < MAX_CLASSNUM+5; i++) courseList[i].course_count = 0;
+    ListOfCourse courseList[MAX_CLASSNUM+5] = {};
 
     for(int i = 0; i < coursenum; i++){
         struct Course course = courses[i];
