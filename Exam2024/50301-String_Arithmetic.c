@@ -22,7 +22,7 @@ int main(){
                 memset(tmp+indx, terms[i], num);
                 indx += num;
             }
-            tmp[indx] = '\0'; 
+            tmp[indx] = '\0';
             strcpy(terms, tmp);
         }
         else if(strcmp(operator , "/") == 0){
