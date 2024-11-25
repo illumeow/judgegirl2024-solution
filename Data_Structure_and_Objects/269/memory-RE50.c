@@ -1,11 +1,13 @@
-#include "memory.h"
+#include "memory-RE50.h"
 #include <stdio.h>
 #include <stdlib.h>
  
 void initMemory(Memory *memory, int length){
-    memory->start = 0;
-    memory->length = length;
-    memory->next = NULL;
+    Memory *tmp = malloc(sizeof(Memory));
+    tmp->start = 0;
+    tmp->length = length;
+    tmp->next = NULL;
+    *memory = *tmp;
 }
  
 void printMemory(Memory *memory){
@@ -44,6 +46,7 @@ void allocateMemory(Memory *memory, int start, int length){
                 *memory = *cur->next;
             }
             else prev->next = cur->next;
+            free(cur);
             return;
         }
         cur->start = start + length;
@@ -59,8 +62,8 @@ void allocateMemory(Memory *memory, int start, int length){
         printf("mid\n");
         #endif
         Memory *tmp = malloc(sizeof(Memory));
-        tmp->start = start + length; // 40
-        tmp->length = (cur->start + cur->length) - (start + length); // 50-40
+        tmp->start = start + length;
+        tmp->length = (cur->start + cur->length) - (start + length);
         tmp->next = cur->next;
         cur->length = start - cur->start;
         cur->next = tmp;
