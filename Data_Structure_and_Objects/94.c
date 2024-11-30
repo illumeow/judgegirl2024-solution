@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 typedef struct node{
     int value;
@@ -57,22 +58,19 @@ void free_tree(Node *node){
     free(node);
 }
 
-void traverse_HRHL(Node *node);
-
-void traverse_HLHR(Node *node){
+void traverse(Node *node, bool is_HLHR){
     if(node == NULL) return;
-    printf("%d\n", node->value);
-    traverse_HRHL(node->left);
-    printf("%d\n", node->value);
-    traverse_HRHL(node->right);
-}
-
-void traverse_HRHL(Node *node){
-    if(node == NULL) return;
-    printf("%d\n", node->value);
-    traverse_HLHR(node->right);
-    printf("%d\n", node->value);
-    traverse_HLHR(node->left);
+    if(is_HLHR){
+        printf("%d\n", node->value);
+        traverse(node->left, false);
+        printf("%d\n", node->value);
+        traverse(node->right, false);
+    }else{
+        traverse(node->right, true);
+        printf("%d\n", node->value);
+        traverse(node->left, true);
+        printf("%d\n", node->value);
+    }
 }
 
 int main(){
@@ -81,6 +79,6 @@ int main(){
     char *ptr = input;
     Node *root = build_tree(&ptr);
     fill_tree(root);
-    traverse_HLHR(root);
+    traverse(root, true);
     free_tree(root);
 }
