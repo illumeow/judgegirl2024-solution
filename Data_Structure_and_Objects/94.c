@@ -21,11 +21,14 @@ Node *build_tree(char **input){
     if(**input == '\0') return NULL;
 
     if(**input == '('){
+        /* next is value */
         (*input)++;
         Node *node = new_node(-1);
         node->left = build_tree(input);
+        /* next is ',' */
         (*input)++;
         node->right = build_tree(input);
+        /* next is ')' */
         (*input)++;
         return node;   
     } else if(isdigit(**input)){
