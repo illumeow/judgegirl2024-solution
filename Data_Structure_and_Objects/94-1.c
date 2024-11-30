@@ -7,6 +7,7 @@ typedef struct node{
     int value;
     struct node *left;
     struct node *right;
+    struct node *parent;
 } Node;
 
 Node *new_node(int value){
@@ -14,34 +15,47 @@ Node *new_node(int value){
     node->value = value;
     node->left = NULL;
     node->right = NULL;
+    node->parent = NULL;
     return node;
 }
 
-Node *build_tree(char **input){
-    /* (*input): ptr to char processing now */
-    if(**input == '\0') return NULL;
+void print_tree(Node *node) {
+    if (node == NULL) return;
 
-    if(**input == '('){
-        /* next is value */
-        (*input)++;
-        Node *node = new_node(-1);
-        node->left = build_tree(input);
-        /* next is ',' */
-        (*input)++;
-        node->right = build_tree(input);
-        /* next is ')' */
-        (*input)++;
-        return node;   
-    } else if(isdigit(**input)){
-        int value = 0;
-        while(isdigit(**input)){
-            value = value * 10 + (**input - '0');
-            (*input)++;
+    // Print the value of the current node (Root)
+    printf("%d -> ", node->value);
+
+    // Traverse the left subtree (Left)
+    print_tree(node->left);
+
+    // Traverse the right subtree (Right)
+    printf("\nv\n");
+    print_tree(node->right);
+}
+
+void build_tree(char input[], Node *node, Node* root){
+    for(int i = 0; input[i]; i++){
+        if(input[i] == '('){
+            node->left = new_node(-1);
+            node->left->parent = node;
+            node = node->left;
+        }else if(input[i] == ','){
+            node->right = new_node(-1);
+            node->right->parent = node;
+            node = node->right;
+        }else if(input[i] == ')'){
+            node = node->parent;
+        }else{
+            int value = 0;
+            while(isdigit(input[i])){
+                value = value * 10 + (input[i] - '0');
+                i++;
+            }
+            i--;
+            node->value = value;
+            node = node->parent;
         }
-        return new_node(value);
     }
-    
-    return NULL;
 }
 
 void fill_tree(Node *node){
@@ -76,8 +90,8 @@ void traverse(Node *node, bool is_HLHR){
 int main(){
     char input[4005];
     scanf("%s", input);
-    char *ptr = input;
-    Node *root = build_tree(&ptr);
+    Node *root = new_node(-1);
+    build_tree(input, root, root);
     fill_tree(root);
     traverse(root, true);
     free_tree(root);
