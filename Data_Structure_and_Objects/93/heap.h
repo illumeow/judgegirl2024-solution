@@ -1,6 +1,6 @@
 #ifndef HEAP_H
 #define HEAP_H
-#define MAXHEAP 100
+#define MAXHEAP 101
  
 struct Heap{
     int ary[MAXHEAP];
